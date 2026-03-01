@@ -1,2 +1,2 @@
 # WinSecure
-Winsecure is agentless Windows Vulnerability and Network Scanner
+Winsecure is Web Based agentless Windows Vulnerability and Network Scanner 
