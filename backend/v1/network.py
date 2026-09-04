@@ -1,4 +1,4 @@
-import re
+import ipaddress
 
 from fastapi import APIRouter, HTTPException
 from services.networkservices import WNET
@@ -7,7 +7,14 @@ router = APIRouter(tags=["Network"])
 
 network_service = WNET()
 
-ip_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
+
+def is_valid_ip(ip: str) -> bool:
+    """Validate IP address using Python's ipaddress module."""
+    try:
+        ipaddress.ip_address(ip)
+        return True
+    except ValueError:
+        return False
 
 
 @router.get("/")
@@ -34,8 +41,7 @@ async def get_host_interfaces():
 @router.get("/ping/{target}")
 async def ping(target: str):
     try:
-        if ip_pattern.match(target):
-            # print(f"Pinging {target}")
+        if is_valid_ip(target):
             network_service.pingo(target)
             return {"message": "Host is up"}
         else:
